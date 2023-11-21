@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'login.dart';
+import 'signup.dart';
 
 void main() => runApp(const MyApp());
 
@@ -22,29 +24,37 @@ class Button extends StatelessWidget {
   final VoidCallback onPress;
   final Color backgroundColor;
   final Color textColor;
+  final double? width;
+  final double? height;
 
   const Button({
   Key? key,
   required this.label,
   required this.onPress,
-  this.backgroundColor = Colors.blue,
+  required this.backgroundColor,
+  this.width,
+  this.height,
   this.textColor = Colors.white
 }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPress,
-      style: ElevatedButton.styleFrom(
-        primary: backgroundColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
+    return SizedBox(
+      width: width, // Usando width
+      height: height, // Usando height
+      child: ElevatedButton(
+        onPressed: onPress,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40.0),
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(color: textColor, fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
-      child: Text(
-        label,
-        style: TextStyle(color: textColor),
-      )
     );
   }
 }
@@ -104,11 +114,11 @@ class RegistryWidget extends StatelessWidget {
   const RegistryWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
+          const Text(
             'Bienvenido',
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -117,29 +127,45 @@ class RegistryWidget extends StatelessWidget {
             ),
             textAlign: TextAlign.left,
           ),
-          SizedBox(height: 15),
-          Text(
+          const SizedBox(height: 15),
+          const Text(
             'Empieza a buscar tus comics \n favoritos!',
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
             ),
           ),
-          SizedBox(height: 40),
+          const SizedBox(height: 40),
           Button(
-            label: 'login',
-            onPress: nothing,
+            label: 'Log in',
+            onPress: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LogInPage()),
+              );
+            },
+            backgroundColor:const Color(0xFFD7142B),
+            height: 54.0,
+            width: 320.0,
           ),
-          SizedBox(height: 3,),
+          const SizedBox(height: 20,),
           Button(
             label: 'Sign Up',
-            onPress: nothing,
+            onPress: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignUpPage()),
+              );
+            },
+            backgroundColor: Color(0xFF00023B),
+            height: 54.0,
+            width: 320.0,
           )
         ],
       )
     );
   }
-}
-void nothing(){
-  log("nada");
+  void nothing(){
+    log("nada");
+  }
 }
