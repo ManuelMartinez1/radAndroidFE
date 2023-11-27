@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final ApiService apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
+  final ApiService apiService = ApiService(baseUrl: 'http://192.168.1.246:8000');
 
   @override
   Widget build(BuildContext context) {
