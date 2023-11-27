@@ -64,6 +64,22 @@ class ApiService {
     return _handleResponse(response, AuthorModel.fromJson);
   }
 
+  Future<List<String>> search(String query) async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/search?query=$query'));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body)['results'];
+        final List<String> results = data.cast<String>().toList();
+        return results;
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (error) {
+      throw Exception('Error de red: $error');
+    }
+  }
+
 
 
 

@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:rad/issue.dart';
 import 'home.dart';
 import 'user.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:rad/api_service.dart';
 import 'package:rad/models/issue_model.dart';
 
@@ -13,8 +10,18 @@ final Color appBarColor = Color(0xFF383b59); // Color de la AppBar
 final Color bottomNavBarColor = Color(0xFF383b59); // Color del bottomNavigationBar
 final Color iconColor = Color(0xFFD9D9D9); // Color de los íconos
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   final ApiService apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
+
+  @override
+  _SearchScreenState createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  List<IssueModel> searchResults = [];
+  bool isSearching = false;
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,8 +47,22 @@ class SearchScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: TextField(
+                        controller: searchController,
+                        onChanged: (query) {
+                          if (query.isNotEmpty) {
+                            performSearch(searchController.text);
+                            setState(() {
+                              isSearching = true;
+                            });
+                          } else {
+                            // Si el campo de búsqueda está vacío, oculta el ícono de "tachita"
+                            setState(() {
+                              isSearching = false;
+                            });
+                          }
+                        },
                         decoration: InputDecoration(
-                          hintText: 'Buscar...',
+                          hintText: 'Search...',
                           border: InputBorder.none,
                         ),
                       ),
@@ -51,26 +72,41 @@ class SearchScreen extends StatelessWidget {
                     icon: Icon(Icons.search, color: Colors.grey),
                     onPressed: () {
                       // Agrega aquí la acción de búsqueda
+                      performSearch(searchController.text);
                     },
                   ),
+                  // Mostrar el ícono de "tachita" solo cuando esté activa la búsqueda
+                  if (isSearching)
+                    IconButton(
+                      icon: Icon(Icons.clear, color: Colors.grey),
+                      onPressed: () {
+                        // Al hacer clic en la "tachita", restablece los resultados
+                        resetSearch();
+                        // También limpia el campo de búsqueda
+                        searchController.clear();
+                      },
+                    ),
                 ],
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Explore all',
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+          if (isSearching)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Search results',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
           Expanded(
-            child: FutureBuilder<List<IssueModel>>(
-              future: apiService.getAllIssues(),
+            child: isSearching
+                ? IssuesGrid(issues: searchResults)
+                : FutureBuilder<List<IssueModel>>(
+              future: widget.apiService.getAllIssues(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -121,6 +157,42 @@ class SearchScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void performSearch(String query) async {
+    setState(() {
+      isSearching = true;
+    });
+    try {
+      // Realiza la búsqueda y obtén los IDs
+      final List<String> ids = await widget.apiService.search(query);
+
+      // Inicializa la lista de resultados
+      List<IssueModel> results = [];
+
+      // Obtiene la información completa de cada issue usando los IDs
+      for (String id in ids) {
+        final IssueModel issue = await widget.apiService.getIssue(id);
+        results.add(issue);
+      }
+
+      // Actualiza los resultados
+      setState(() {
+        searchResults = results;
+      });
+    } catch (error) {
+      print('Error en la búsqueda: $error');
+      // Manejar el error de manera apropiada (puede ser un error de red, etc.)
+    }
+  }
+
+
+
+
+  void resetSearch() {
+    setState(() {
+      isSearching = false;
+    });
   }
 }
 

@@ -18,6 +18,7 @@ class IssueScreen extends StatelessWidget {
   final ApiService apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
   bool foundAuthorW = false;
   bool foundAuthorA = false;
+  bool isFavorited = false;
 
   IssueScreen({required this.issueId});
 
@@ -87,11 +88,11 @@ class IssueScreen extends StatelessWidget {
                                     issueDetails.issueName,
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 20.0,
+                                      fontSize: 23.0,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(height: 20.0),
+                                  SizedBox(height: 11.0),
                                   Row(
                                     children: [
                                       Icon(
@@ -106,6 +107,70 @@ class IssueScreen extends StatelessWidget {
                                       ),
                                     ],
                                   ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 135.0, // Ancho deseado para el botón
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            // Agrega aquí la acción al presionar el botón
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Color(0xFFd7142b), // Color del botón
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20.0), // Radio del borde del botón
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Read',
+                                                style: TextStyle(
+                                                  color: Colors.white, // Color del texto
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 135.0, // Ancho deseado para el botón
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            isFavorited = !isFavorited;
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Color(0xFFdcdcdc), // Color del botón
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20.0), // Radio del borde del botón
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                isFavorited ? Icons.favorite : Icons.favorite_outline,
+                                                color: Color(0xFF00032b),
+                                              ),
+                                              SizedBox(width: 8.0),
+                                              Text(
+                                                isFavorited ? 'Favorited' : 'Favorite',
+                                                style: TextStyle(
+                                                  color: Color(0xFF00032b), // Color del texto
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
 
                                 ],
                               ),
@@ -203,6 +268,7 @@ class IssueScreen extends StatelessWidget {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -219,6 +285,7 @@ class IssueScreen extends StatelessWidget {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],

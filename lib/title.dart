@@ -86,11 +86,19 @@ class TitleScreen extends StatelessWidget {
                                   titleDetails.name,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 20.0,
+                                    fontSize: 24.0,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 20.0),
+                                SizedBox(height: 11.0),
+                                Text(
+                                  titleDetails.publishDate,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                SizedBox(height: 15.0),
                                 Row(
                                   children: [
                                     Icon(
@@ -105,6 +113,7 @@ class TitleScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
+
                               ],
                             ),
                           ),
@@ -154,7 +163,7 @@ class TitleScreen extends StatelessWidget {
                     'Volumes',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 22.0,
+                      fontSize: 24.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -163,7 +172,7 @@ class TitleScreen extends StatelessWidget {
                 Container(
                   height: 230.0, // Altura deseada para la lista de Volumes
                   child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
+                    scrollDirection: Axis.vertical,
                     itemCount: titleDetails.volumes.length,
                     itemBuilder: (context, index) {
                       String volumeId = titleDetails.volumes[index];
@@ -194,10 +203,9 @@ class TitleScreen extends StatelessWidget {
                                   children: [
                                     // Columna izquierda para la portada del volumen
                                     Container(
-                                      width: 140.0, // Ancho deseado para la portada
+                                      width: 160.0, // Ancho deseado para la portada
                                       height: 230.0, // Alto deseado para la portada
                                       child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8.0),
                                         child: Image.network(
                                           volume.cover,
                                           fit: BoxFit.cover,
@@ -206,28 +214,30 @@ class TitleScreen extends StatelessWidget {
                                     ),
                                     // Separador
                                     SizedBox(width: 16.0),
+                                  Expanded(
                                     // Columna derecha para el nombre del título asociado al volumen
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center, // Alinea el contenido verticalmente al centro
-                                      children: [
-                                        Text(
-                                          titleDetails.name,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center, // Alinea el contenido verticalmente al centro
+                                        children: [
+                                          Text(
+                                            titleDetails.name,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(height: 8.0),
-                                        Text(
-                                          'Vol. ${volume.volumeNumber}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14.0,
+                                          SizedBox(height: 8.0),
+                                          Text(
+                                            'Vol. ${volume.volumeNumber}',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14.0,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),

@@ -12,13 +12,16 @@ import 'package:rad/models/title_model.dart';
 final Color scaffoldBackgroundColor = Color(0xFF00023B); // Fondo general del Scaffold
 final Color appBarColor = Color(0xFF383b59); // Color de la AppBar
 final Color bottomNavBarColor = Color(0xFF383b59); // Color del bottomNavigationBar
-final Color iconColor = Color(0xFFD9D9D9); // Color de los íconos
+final Color iconColor = Color(0xFFD9D9D9);
+
 
 class VolumeScreen extends StatelessWidget {
   final String volumeId;
   final ApiService apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
 
   VolumeScreen({required this.volumeId});
+
+  bool isFavorited = false;
 
   @override
   Widget build(BuildContext context) {
@@ -97,15 +100,24 @@ class VolumeScreen extends StatelessWidget {
                                         return Text(
                                           '${titleDetails.name} vol. ${volumeDetails.volumeNumber}',  // Mostrar el nombre del título junto con el número de volumen
                                           style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20.0,
+                                            color: Color(0xFFdcdcdc),
+                                            fontSize: 23.0,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         );
                                       }
                                     },
                                   ),
-                                  SizedBox(height: 20.0),
+                                  SizedBox(height: 7.0),
+                                  Text(
+                                    volumeDetails.publishDate,
+                                    style: TextStyle(
+                                      color: Color(0xFFdcdcdc),
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.0),
+
                                   Row(
                                     children: [
                                       Icon(
@@ -115,7 +127,38 @@ class VolumeScreen extends StatelessWidget {
                                       Text(
                                         volumeDetails.rating.toString(),
                                         style: TextStyle(
-                                          color: Colors.white,
+                                          color: Color(0xFFdcdcdc),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  Row(
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                            isFavorited = !isFavorited;
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Color(0xFFdcdcdc), // Color del botón
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10.0), // Radio del borde del botón
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              isFavorited ? Icons.favorite : Icons.favorite_outline,
+                                              color: Color(0xFF00032b),
+                                            ),
+                                            SizedBox(width: 8.0),
+                                            Text(
+                                              isFavorited ? 'Favorited' : 'Favorite',
+                                              style: TextStyle(
+                                                color: Color(0xFF00032b), // Color del texto
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -132,11 +175,12 @@ class VolumeScreen extends StatelessWidget {
                           child: Text(
                             volumeDetails.description,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Color(0xFFdcdcdc),
                               fontSize: 14.0,
                             ),
                           ),
                         ),
+
                       ],
                     ),
                   ),
@@ -154,7 +198,7 @@ class VolumeScreen extends StatelessWidget {
                                 Chip(
                                   label: Text(tag),
                                   backgroundColor: Color(0xFFd7142b), // Puedes ajustar el color según tus preferencias
-                                  labelStyle: TextStyle(color: Colors.white),
+                                  labelStyle: TextStyle(color: Color(0xFFdcdcdc)),
                                 ),
                               ],
                             ),
@@ -168,8 +212,8 @@ class VolumeScreen extends StatelessWidget {
                     child: Text(
                       'Issues',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22.0,
+                        color: Color(0xFFdcdcdc),
+                        fontSize: 24.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -213,7 +257,6 @@ class VolumeScreen extends StatelessWidget {
                                         width: 160.0, // Ancho deseado para la portada
                                         height: 230.0, // Alto deseado para la portada
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(8.0),
                                           child: Image.network(
                                             issue.cover,
                                             fit: BoxFit.cover,
@@ -232,8 +275,8 @@ class VolumeScreen extends StatelessWidget {
                                               child: Text(
                                                 issue.issueName,
                                                 style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16.0,
+                                                  color: Color(0xFFdcdcdc),
+                                                  fontSize: 20.0,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                                 maxLines: 2, // Ajusta el número máximo de líneas según sea necesario
@@ -244,7 +287,7 @@ class VolumeScreen extends StatelessWidget {
                                             Text(
                                               'Issue #${issue.issueNumber}',
                                               style: TextStyle(
-                                                color: Colors.white,
+                                                color: Color(0xFFdcdcdc),
                                                 fontSize: 14.0,
                                               ),
                                             ),
