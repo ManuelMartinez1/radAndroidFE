@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:rad/main.dart';
+import 'home.dart';
 
 class LogInPage extends StatelessWidget{
   const LogInPage ({Key? key}): super(key: key);
@@ -32,7 +33,7 @@ class LogInPage extends StatelessWidget{
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      'Iniciar Sesión',
+                      'Iniciar sesión',
                       style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold, color: Colors.white),
                       textAlign: TextAlign.left,
                     ),
@@ -41,7 +42,7 @@ class LogInPage extends StatelessWidget{
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      'Bienvenido de nuevo \n !Tus comics te están esperando!',
+                      'Bienvenido de nuevo \n ¡Tus comics te están esperando!',
                       style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.normal, color: Colors.white),
                       textAlign: TextAlign.left,
                     ),
@@ -80,7 +81,11 @@ class LogInPage extends StatelessWidget{
                   Center(
                     child: Button(
                       label: 'Iniciar sesión',
-                      onPress: nothing, // Reemplaza con tu función
+                      onPress: (){
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );},
                       backgroundColor: Color(0xFFD7142B),
                       width: 320.0,
                       height: 54,

@@ -41,7 +41,7 @@ class SignUpPage extends StatelessWidget{
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      '!Crea tu cuenta para que puedas acceder \n a cientos de comics que tenemos \n disponibles!',
+                      '¡Crea tu cuenta para que puedas acceder \n a cientos de comics que tenemos \n disponibles!',
                       style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.normal, color: Colors.white),
                       textAlign: TextAlign.left,
                     ),
