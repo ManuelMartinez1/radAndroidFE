@@ -1,11 +1,15 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:rad/api_service.dart';
 import 'package:rad/main.dart';
 import 'home.dart';
 
 class LogInPage extends StatelessWidget{
-  const LogInPage ({Key? key}): super(key: key);
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final ApiService apiservice = ApiService(baseUrl: 'http://192.168.1.246:8000');
+  LogInPage ({Key? key}): super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +56,7 @@ class LogInPage extends StatelessWidget{
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: TextField(
+                      controller: usernameController,
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
@@ -66,6 +71,7 @@ class LogInPage extends StatelessWidget{
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: TextField(
+                      controller: passwordController,
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
@@ -81,11 +87,26 @@ class LogInPage extends StatelessWidget{
                   Center(
                     child: Button(
                       label: 'Iniciar sesión',
-                      onPress: (){
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                      );},
+                      onPress: () async {
+                      String username = usernameController.text;
+                      String password = passwordController.text;
+
+                      if (username.isNotEmpty && password.isNotEmpty){
+                        try{
+                          var response = await apiservice.login(username, password);
+                          SnackBar(content: Text('Welcome $username'));
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => HomeScreen())
+                          );
+                        }
+                        catch(e){
+                          showError(context, 'Failed to login ${e.toString()}');
+                        }
+                      }else{
+                       SnackBar(content: Text('Rellena los campos necesarios'));
+                      }
+                        },
                       backgroundColor: Color(0xFFD7142B),
                       width: 320.0,
                       height: 54,
@@ -100,7 +121,8 @@ class LogInPage extends StatelessWidget{
       ),
     );
   }
-  void nothing(){
-    log('nada');
+  void showError(BuildContext context, String message){
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

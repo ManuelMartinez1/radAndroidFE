@@ -87,4 +87,43 @@ class ApiService {
        throw Exception('Failed to load data');
      }
    }
+
+   Future<Map<String, dynamic>> login(String username, String password) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: json.encode({
+        'Username' : username,
+        'Password': password,
+      })
+    );
+
+    if (response.statusCode== 200){
+      return json.decode(response.body);
+    }else {
+      throw Exception('Failed to login. Status code: ${response.statusCode}');
+    }
+  }
+  Future<void> SignUp(String? email,String? username, String? password,String? date, String role) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/register'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode({
+        'Email' : email,
+        'Username': username,
+        'Password': password,
+        'Date_of_Birth': date,
+        'accountType': role,
+      })
+    );
+    if (response.statusCode==200 || response.statusCode ==201){
+      return json.decode(response.body);
+    }else{
+      throw Exception('Failed to login. Status code: ${response.statusCode}');
+    }
+  }
   }

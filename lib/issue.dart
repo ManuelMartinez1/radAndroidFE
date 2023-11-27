@@ -15,7 +15,7 @@ final Color iconColor = Color(0xFFD9D9D9); // Color de los íconos
 
 class IssueScreen extends StatelessWidget {
   final String issueId;
-  final ApiService apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
+  final ApiService apiService = ApiService(baseUrl: 'http://192.168.1.246:8000');
   bool foundAuthorW = false;
   bool foundAuthorA = false;
 

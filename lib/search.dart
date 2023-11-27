@@ -14,7 +14,7 @@ final Color bottomNavBarColor = Color(0xFF383b59); // Color del bottomNavigation
 final Color iconColor = Color(0xFFD9D9D9); // Color de los íconos
 
 class SearchScreen extends StatelessWidget {
-  final ApiService apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
+  final ApiService apiService = ApiService(baseUrl: 'http://192.168.1.246:8000');
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -15,7 +15,7 @@ final Color iconColor = Color(0xFFD9D9D9); // Color de los íconos
 
 class TitleScreen extends StatelessWidget {
   final String titleId;
-  final ApiService apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
+  final ApiService apiService = ApiService(baseUrl: 'http://192.168.1.246:8000');
 
   TitleScreen({required this.titleId});
 

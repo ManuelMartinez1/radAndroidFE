@@ -1,10 +1,16 @@
 import 'dart:developer';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:rad/main.dart';
+import 'package:rad/subscription.dart';
 
 class SignUpPage extends StatelessWidget{
-  const SignUpPage ({Key? key}): super(key: key);
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPassController = TextEditingController();
+
+  SignUpPage ({Key? key}): super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +56,7 @@ class SignUpPage extends StatelessWidget{
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: TextField(
+                      controller: usernameController,
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
@@ -64,6 +71,7 @@ class SignUpPage extends StatelessWidget{
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: TextField(
+                      controller: emailController,
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
@@ -78,6 +86,7 @@ class SignUpPage extends StatelessWidget{
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: TextField(
+                      controller: passwordController,
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
@@ -92,6 +101,7 @@ class SignUpPage extends StatelessWidget{
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: TextField(
+                      controller: confirmPassController,
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
@@ -107,7 +117,30 @@ class SignUpPage extends StatelessWidget{
                   Center(
                     child: Button(
                       label: 'Registrarme',
-                      onPress: nothing, // Reemplaza con tu función
+                      onPress: () async {
+                        String username = usernameController.text;
+                        String password = passwordController.text;
+                        String email = emailController.text;
+                        String confirm = confirmPassController.text;
+                        if(username.isNotEmpty && password.isNotEmpty && confirm.isNotEmpty && email.isNotEmpty){
+                          if(password == confirm){
+                              final prefs = await SharedPreferences.getInstance();
+                              await prefs.setString('username', username);
+                              await prefs.setString('password', password);
+                              await prefs.setString('email', email);
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (
+                                      context) => SubscriptionPlan()),);
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('Las contraseñas no coinciden')));
+                          }
+                        }
+                        else {
+                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Rellena los campos necesarios')));
+                        }
+                      },
                       backgroundColor: Color(0xFFD7142B),
                       width: 320.0,
                       height: 54,
@@ -122,7 +155,8 @@ class SignUpPage extends StatelessWidget{
       ),
     );
   }
-  void nothing(){
-    log('nada');
+  void showError(BuildContext context, String message){
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
