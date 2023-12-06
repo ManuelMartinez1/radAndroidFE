@@ -1,31 +1,58 @@
 import 'package:flutter/material.dart';
 
-import 'volume.dart';
 import 'home.dart';
 import 'search.dart';
 import 'user.dart';
 import 'package:rad/api_service.dart';
 import 'package:rad/models/author_model.dart';
 import 'package:rad/models/issue_model.dart';
+import 'package:rad/auth_service.dart';
+import 'package:rad/read.dart';
 
-final Color scaffoldBackgroundColor = Color(0xFF00023B); // Fondo general del Scaffold
-final Color appBarColor = Color(0xFF383b59); // Color de la AppBar
-final Color bottomNavBarColor = Color(0xFF383b59); // Color del bottomNavigationBar
+final Color scaffoldBackgroundColor = Color(0xFF100C08); // Fondo general del Scaffold
+final Color appBarColor = Color(0xFF383838); // Color de la AppBar
+final Color bottomNavBarColor = Color(0xFF383838); // Color del bottomNavigationBar
 final Color iconColor = Color(0xFFD9D9D9); // Color de los íconos
 
-class IssueScreen extends StatelessWidget {
+class IssueScreen extends StatefulWidget {
   final String issueId;
-  final ApiService apiService = ApiService(baseUrl: 'http://192.168.1.246:8000');
-  bool foundAuthorW = false;
-  bool foundAuthorA = false;
-  bool isFavorited = false;
+  final apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
+
 
   IssueScreen({required this.issueId});
 
   @override
+  _IssueScreenState createState() => _IssueScreenState();
+}
+
+class _IssueScreenState extends State<IssueScreen> {
+  bool isFavorited = false;
+  bool foundAuthorW = false;
+  bool foundAuthorA = false;
+
+  final apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
+
+  @override
+  void initState() {
+    super.initState();
+    checkFavoriteStatus();
+  }
+
+  Future<void> checkFavoriteStatus() async {
+    try {
+      final isFavorited = await apiService.isComicInFavorites(widget.issueId);
+      setState(() {
+        this.isFavorited = isFavorited;
+      });
+    } catch (error) {
+      print('Error al verificar estado de favoritos: $error');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<IssueModel>(
-      future: apiService.getIssue(issueId),
+      future: widget.apiService.getIssue(widget.issueId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
@@ -34,13 +61,16 @@ class IssueScreen extends StatelessWidget {
         } else if (!snapshot.hasData) {
           return Text('No se encontraron datos');
         } else {
-          // Obtén los detalles del título desde el snapshot
           IssueModel issueDetails = snapshot.data!;
 
           return Scaffold(
             appBar: AppBar(
-              title: Text('Issue details'),
+              title: Text('Issue details', style: TextStyle(
+                fontSize: 24.0,
+                color: Colors.white,
+              ),),
               backgroundColor: appBarColor,
+              iconTheme: IconThemeData(color: Colors.white),
             ),
             backgroundColor: scaffoldBackgroundColor,
             body: SingleChildScrollView(
@@ -110,13 +140,45 @@ class IssueScreen extends StatelessWidget {
                                   Row(
                                     children: [
                                       SizedBox(
-                                        width: 135.0, // Ancho deseado para el botón
+                                        width: 140.0, // Ancho deseado para el botón
                                         child: ElevatedButton(
-                                          onPressed: () {
-                                            // Agrega aquí la acción al presionar el botón
+                                          onPressed: () async {
+                                            String? userRole = await AuthService.getUserRole();
+                                            // Verificar si el usuario tiene el rol "member"
+                                            if (userRole == "premium") {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => ReadScreen()),
+                                              );
+                                              //ver si puedo hacer readscreen(issuedetails)
+                                            } else if (issueDetails.free){
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => ReadScreen()),
+                                              );
+                                            }else {
+                                              // Mostrar un mensaje indicando que el contenido solo está disponible para premium
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Contenido Premium"),
+                                                    content: Text("Este contenido está disponible solo para usuarios premium."),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop();
+                                                        },
+                                                        child: Text("OK"),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            primary: Color(0xFFd7142b), // Color del botón
+                                            primary: Color(0xFFF04A00), // Color del botón
                                             shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(20.0), // Radio del borde del botón
                                             ),
@@ -139,10 +201,19 @@ class IssueScreen extends StatelessWidget {
                                   Row(
                                     children: [
                                       SizedBox(
-                                        width: 135.0, // Ancho deseado para el botón
+                                        width: 140.0, // Ancho deseado para el botón
                                         child: ElevatedButton(
                                           onPressed: () {
-                                            isFavorited = !isFavorited;
+                                            setState(() {
+                                              isFavorited = !isFavorited;
+                                            });
+                                            if (isFavorited) {
+                                              // Lógica para agregar a favoritos
+                                              apiService.addToFavorites(widget.issueId);
+                                            } else {
+                                              // Lógica para quitar de favoritos
+                                              apiService.removeFromFavorites(widget.issueId);
+                                            }
                                           },
                                           style: ElevatedButton.styleFrom(
                                             primary: Color(0xFFdcdcdc), // Color del botón
@@ -215,9 +286,14 @@ class IssueScreen extends StatelessWidget {
                               children: [
                                 Chip(
                                   label: Text(tag),
-                                  backgroundColor: Color(0xFFd7142b), // Puedes ajustar el color según tus preferencias
+                                  backgroundColor: Color(0xFFF04A00),
                                   labelStyle: TextStyle(color: Colors.white),
-                                ),
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(color: Colors.transparent),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                )
+
                               ],
                             ),
                           );

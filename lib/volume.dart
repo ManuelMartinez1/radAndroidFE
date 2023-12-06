@@ -9,15 +9,15 @@ import 'package:rad/api_service.dart';
 import 'package:rad/models/volume_model.dart';
 import 'package:rad/models/title_model.dart';
 
-final Color scaffoldBackgroundColor = Color(0xFF00023B); // Fondo general del Scaffold
-final Color appBarColor = Color(0xFF383b59); // Color de la AppBar
-final Color bottomNavBarColor = Color(0xFF383b59); // Color del bottomNavigationBar
+final Color scaffoldBackgroundColor = Color(0xFF100C08); // Fondo general del Scaffold
+final Color appBarColor = Color(0xFF383838); // Color de la AppBar
+final Color bottomNavBarColor = Color(0xFF383838); // Color del bottomNavigationBar
 final Color iconColor = Color(0xFFD9D9D9);
 
 
 class VolumeScreen extends StatelessWidget {
   final String volumeId;
-  final ApiService apiService = ApiService(baseUrl: 'http://192.168.1.246:8000');
+  final ApiService apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
 
   VolumeScreen({required this.volumeId});
 
@@ -40,8 +40,12 @@ class VolumeScreen extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text('Volume details'),
+              title: Text('Volume details', style: TextStyle(
+                fontSize: 24.0,
+                color: Colors.white,
+              ),),
               backgroundColor: appBarColor,
+              iconTheme: IconThemeData(color: Colors.white),
             ),
             backgroundColor: scaffoldBackgroundColor,
             body: SingleChildScrollView(
@@ -72,7 +76,6 @@ class VolumeScreen extends StatelessWidget {
                               width: 175.0, // Ancho deseado para la portada
                               height: 175.0, // Alto deseado para la portada
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
                                 child: Image.network(
                                   volumeDetails.cover,
                                   fit: BoxFit.cover,
@@ -197,9 +200,14 @@ class VolumeScreen extends StatelessWidget {
                               children: [
                                 Chip(
                                   label: Text(tag),
-                                  backgroundColor: Color(0xFFd7142b), // Puedes ajustar el color según tus preferencias
-                                  labelStyle: TextStyle(color: Color(0xFFdcdcdc)),
-                                ),
+                                  backgroundColor: Color(0xFFF04A00),
+                                  labelStyle: TextStyle(color: Colors.white),
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(color: Colors.transparent),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                )
+
                               ],
                             ),
                           );

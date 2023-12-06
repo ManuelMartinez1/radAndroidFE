@@ -6,6 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'signup.dart';
+import 'package:rad/api_service.dart';
+
+final apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
 
 void main() => runApp(const MyApp());
 
@@ -50,7 +53,7 @@ class Button extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(40.0),
+            borderRadius: BorderRadius.circular(10.0),
           ),
         ),
         child: Text(
@@ -82,7 +85,7 @@ class Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFF00023B),
+      color: const Color(0xFF100C08),
       width: double.infinity,
       height: double.infinity,
     );
@@ -147,7 +150,7 @@ class RegistryWidget extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => LogInPage()),
               );
             },
-            backgroundColor:const Color(0xFFD7142B),
+            backgroundColor:const Color(0xFFF04A00),
             height: 54.0,
             width: 320.0,
           ),
@@ -160,7 +163,7 @@ class RegistryWidget extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => SignUpPage()),
               );
             },
-            backgroundColor: Color(0xFF00023B),
+            backgroundColor: Color(0xFF100C08),
             height: 54.0,
             width: 320.0,
           )

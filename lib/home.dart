@@ -7,9 +7,9 @@ import 'package:rad/api_service.dart';
 import 'package:rad/models/title_model.dart';
 import 'package:rad/title.dart';
 
-final Color scaffoldBackgroundColor = Color(0xFF00023B); // Fondo general del Scaffold
-final Color appBarColor = Color(0xFF383b59); // Color de la AppBar
-final Color bottomNavBarColor = Color(0xFF383b59); // Color del bottomNavigationBar
+final Color scaffoldBackgroundColor = Color(0xFF100C08); // Fondo general del Scaffold
+final Color appBarColor = Color(0xFF383838); // Color de la AppBar
+final Color bottomNavBarColor = Color(0xFF383838); // Color del bottomNavigationBar
 final Color iconColor = Color(0xFFD9D9D9); // Color de los íconos
 
 
@@ -19,13 +19,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final ApiService apiService = ApiService(baseUrl: 'http://192.168.1.246:8000');
+  final ApiService apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('Home', style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),),
         backgroundColor: appBarColor,
         automaticallyImplyLeading: false,
       ),
@@ -33,6 +36,36 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: 10.0,),
+          Container(
+            height: 100.0, // Ajusta la altura según sea necesario
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 4,
+              itemBuilder: (context, index) {
+                List<String> imagePaths = [
+                  'https://assetsio.reedpopcdn.com/Spider-Banner_AVVWjOb.jpg?width=1200&height=1200&fit=bounds&quality=70&format=jpg&auto=webp',
+                  'https://cdn.businessinsider.es/sites/navi.axelspringer.es/public/media/image/2022/03/batman-comics-2636505.jpg?tf=3840x',
+                  'https://img2.rtve.es/i/?w=1600&i=1685615057917.jpg',
+                  'https://www.cinemascomics.com/wp-content/uploads/2021/06/superman-comics-dest.jpg',
+                ]; // Lista de rutas de imágenes
+
+                return GestureDetector(
+                  onTap: () {
+                    // Agrega aquí la lógica para navegar a la pantalla o URL deseada
+                    print('Tapped on image $index');
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(imagePaths[index]),
+                      radius: 47.0,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(

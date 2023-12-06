@@ -8,7 +8,7 @@ import 'home.dart';
 class LogInPage extends StatelessWidget{
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final ApiService apiservice = ApiService(baseUrl: 'http://192.168.1.246:8000');
+  final ApiService apiservice = ApiService(baseUrl: 'http://192.168.56.1:8000');
   LogInPage ({Key? key}): super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -72,6 +72,7 @@ class LogInPage extends StatelessWidget{
                     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: TextField(
                       controller: passwordController,
+                      obscureText: true,
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
@@ -107,7 +108,7 @@ class LogInPage extends StatelessWidget{
                        SnackBar(content: Text('Rellena los campos necesarios'));
                       }
                         },
-                      backgroundColor: Color(0xFFD7142B),
+                      backgroundColor: Color(0xFFF04A00),
                       width: 320.0,
                       height: 54,
                     ),

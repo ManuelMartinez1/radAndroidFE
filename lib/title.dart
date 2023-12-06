@@ -8,14 +8,14 @@ import 'package:rad/api_service.dart';
 import 'package:rad/models/title_model.dart';
 import 'package:rad/models/volume_model.dart';
 
-final Color scaffoldBackgroundColor = Color(0xFF00023B); // Fondo general del Scaffold
-final Color appBarColor = Color(0xFF383b59); // Color de la AppBar
-final Color bottomNavBarColor = Color(0xFF383b59); // Color del bottomNavigationBar
+final Color scaffoldBackgroundColor = Color(0xFF100C08); // Fondo general del Scaffold
+final Color appBarColor = Color(0xFF383838); // Color de la AppBar
+final Color bottomNavBarColor = Color(0xFF383838); // Color del bottomNavigationBar
 final Color iconColor = Color(0xFFD9D9D9); // Color de los íconos
 
 class TitleScreen extends StatelessWidget {
   final String titleId;
-  final ApiService apiService = ApiService(baseUrl: 'http://192.168.1.246:8000');
+  final ApiService apiService = ApiService(baseUrl: 'http://192.168.56.1:8000');
 
   TitleScreen({required this.titleId});
 
@@ -36,8 +36,12 @@ class TitleScreen extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text('Title details'),
+              title: Text('Title details', style: TextStyle(
+                fontSize: 24.0,
+                color: Colors.white,
+              ),),
               backgroundColor: appBarColor,
+              iconTheme: IconThemeData(color: Colors.white),
             ),
             backgroundColor: scaffoldBackgroundColor,
             body: SingleChildScrollView(
@@ -68,7 +72,6 @@ class TitleScreen extends StatelessWidget {
                             width: 175.0, // Ancho deseado para la portada
                             height: 175.0, // Alto deseado para la portada
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
                               child: Image.network(
                                 titleDetails.cover,
                                 fit: BoxFit.cover,
@@ -147,9 +150,14 @@ class TitleScreen extends StatelessWidget {
                             children: [
                               Chip(
                                 label: Text(tag),
-                                backgroundColor: Color(0xFFd7142b), // Puedes ajustar el color según tus preferencias
+                                backgroundColor: Color(0xFFF04A00),
                                 labelStyle: TextStyle(color: Colors.white),
-                              ),
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              )
+
                             ],
                           ),
                         );
@@ -170,7 +178,7 @@ class TitleScreen extends StatelessWidget {
                 ),
                 // Lista horizontal de Volumes
                 Container(
-                  height: 230.0, // Altura deseada para la lista de Volumes
+                  height: 230.0,
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: titleDetails.volumes.length,
@@ -193,7 +201,7 @@ class TitleScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => VolumeScreen(volumeId: volume.id), // Ajusta según tu implementación
+                                    builder: (context) => VolumeScreen(volumeId: volume.id),
                                   ),
                                 );
                               },
@@ -203,8 +211,8 @@ class TitleScreen extends StatelessWidget {
                                   children: [
                                     // Columna izquierda para la portada del volumen
                                     Container(
-                                      width: 160.0, // Ancho deseado para la portada
-                                      height: 230.0, // Alto deseado para la portada
+                                      width: 160.0,
+                                      height: 230.0,
                                       child: ClipRRect(
                                         child: Image.network(
                                           volume.cover,
@@ -218,7 +226,7 @@ class TitleScreen extends StatelessWidget {
                                     // Columna derecha para el nombre del título asociado al volumen
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.center, // Alinea el contenido verticalmente al centro
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             titleDetails.name,

@@ -6,7 +6,7 @@ import 'package:rad/main.dart';
 import 'package:rad/home.dart';
 
 class SubscriptionPlan extends StatelessWidget {
-  final ApiService apiservice = ApiService(baseUrl: 'http://192.168.1.246:8000');
+  final ApiService apiservice = ApiService(baseUrl: 'http://192.168.56.1:8000');
   SubscriptionPlan({Key? key}) : super(key: key);
 
   @override
@@ -14,7 +14,7 @@ class SubscriptionPlan extends StatelessWidget {
     return Scaffold(
 
       body: Container(
-        color: const Color(0xFF00023B),
+        color: const Color(0xFF100C08),
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,19 +43,19 @@ class SubscriptionPlan extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                '¡Explota todos los beneficios que puedes \n obtener ccon nuestros diferentes planes!',
+                '¡Explora todos los beneficios que puedes \n obtener ccon nuestros diferentes planes!',
                 style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.normal, color: Colors.white),
                 textAlign: TextAlign.left,
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 40),
             _buildPlanButton(
               context: context,
               title: '   Basic   ',
               price: '\$0/mes',
               backgroundColor: const Color.fromRGBO(245, 245, 245, .30),
               textColor: Colors.white,
-              labelColor: const Color(0xFF00023B),
+              labelColor: const Color(0xFF100C08),
               bulletPoints: const [
                 '•  Acceso limitado para leer cómics',
                 '•  Navega y descubre todos los cómics disponibles',
@@ -83,9 +83,9 @@ class SubscriptionPlan extends StatelessWidget {
               context: context,
               title: 'Premium',
               price: '\$15.99/mes',
-              backgroundColor: const Color(0xFFD7142B),
+              backgroundColor: const Color(0xFFF04A00),
               textColor: Colors.white,
-              labelColor: const Color(0xFFD7142B) ,
+              labelColor: const Color(0xFFF04A00) ,
               bulletPoints: const [
                 '•  Acceso ilimitado a todos los cómics',
                 '•  Agrega a favoritos cuántos cómics quieras',

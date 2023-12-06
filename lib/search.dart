@@ -5,9 +5,9 @@ import 'user.dart';
 import 'package:rad/api_service.dart';
 import 'package:rad/models/issue_model.dart';
 
-final Color scaffoldBackgroundColor = Color(0xFF00023B); // Fondo general del Scaffold
-final Color appBarColor = Color(0xFF383b59); // Color de la AppBar
-final Color bottomNavBarColor = Color(0xFF383b59); // Color del bottomNavigationBar
+final Color scaffoldBackgroundColor = Color(0xFF100C08); // Fondo general del Scaffold
+final Color appBarColor = Color(0xFF383838); // Color de la AppBar
+final Color bottomNavBarColor = Color(0xFF383838); // Color del bottomNavigationBar
 final Color iconColor = Color(0xFFD9D9D9); // Color de los íconos
 
 class SearchScreen extends StatefulWidget {
@@ -26,7 +26,10 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search'),
+        title: Text('Search', style: TextStyle(
+          fontSize: 24.0,
+          color: Colors.white,
+        ),),
         backgroundColor: appBarColor,
         automaticallyImplyLeading: false,
       ),
@@ -48,19 +51,6 @@ class _SearchScreenState extends State<SearchScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: TextField(
                         controller: searchController,
-                        onChanged: (query) {
-                          if (query.isNotEmpty) {
-                            performSearch(searchController.text);
-                            setState(() {
-                              isSearching = true;
-                            });
-                          } else {
-                            // Si el campo de búsqueda está vacío, oculta el ícono de "tachita"
-                            setState(() {
-                              isSearching = false;
-                            });
-                          }
-                        },
                         decoration: InputDecoration(
                           hintText: 'Search...',
                           border: InputBorder.none,
@@ -185,9 +175,6 @@ class _SearchScreenState extends State<SearchScreen> {
       // Manejar el error de manera apropiada (puede ser un error de red, etc.)
     }
   }
-
-
-
 
   void resetSearch() {
     setState(() {
